@@ -4,7 +4,9 @@ const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      required: true,
+      required: function () {
+        return !this.userName;
+      },
       unique: true,
     },
     password: {
@@ -17,7 +19,9 @@ const userSchema = new mongoose.Schema(
     },
     userName: {
       type: String,
-      required: true,
+      required: function () {
+        return !this.email;
+      },
       unique: true,
     },
     isVerified: {
