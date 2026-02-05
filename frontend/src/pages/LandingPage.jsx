@@ -1,5 +1,6 @@
 import React from "react";
 import { Rocket } from "lucide-react";
+import { Link } from "react-router";
 
 export default function LandingPage() {
   return (
@@ -38,16 +39,20 @@ export default function LandingPage() {
         </div>
         <div>
           <div className=" max-w-xl mx-auto flex flex-col items-center mt-5 mb-10">
-            <button
-              className=" bg-blue-600 px-30 py-3 text-xl text-white rounded-xl "
-              style={{ boxShadow: "0 6px 20px rgba(37,99,235, 0.4)" }}
-            >
-              Get Started
-            </button>
+            <Link to="/signup">
+              <button
+                className=" bg-blue-600 px-30 py-3 text-xl text-white rounded-xl "
+                style={{ boxShadow: "0 6px 20px rgba(37,99,235, 0.4)" }}
+              >
+                Get Started
+              </button>
+            </Link>
 
-            <button className=" bg-gray-700 px-36 py-3 text-xl text-white rounded-xl mt-5">
-              Log In
-            </button>
+            <Link to="/login">
+              <button className=" bg-gray-700 px-36 py-3 text-xl text-white rounded-xl mt-5">
+                Log In
+              </button>
+            </Link>
           </div>
         </div>
         <p className="text-center text-gray-500 font-light text-sm mb-10 ">
