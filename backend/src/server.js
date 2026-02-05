@@ -4,6 +4,7 @@ import authRoutes from "./routes/authRoutes.js";
 import connectDb from "./config/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import rateLimiter from "./middleware/rateLimiter.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(
     credentials: true,
   }),
 );
+app.use(rateLimiter);
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);

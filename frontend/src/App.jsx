@@ -72,14 +72,7 @@ function App() {
             }
           />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route
-            path="/verify-email"
-            element={
-              <RedirectAuthenticatedUser>
-                <EmailVerificationPage />
-              </RedirectAuthenticatedUser>
-            }
-          />
+          <Route path="/verify-email" element={<EmailVerificationPage />} />
         </Routes>
       </div>
     </div>

@@ -44,7 +44,7 @@ export async function signup(req, res) {
 
     generateTokenAndSetCookie(res, user._id);
 
-    sendVerificationEmail(email, userName, verificationToken);
+    sendVerificationEmail(email, verificationToken);
 
     return res.status(201).json({
       success: true,
@@ -57,13 +57,43 @@ export async function signup(req, res) {
   }
 }
 
+export async function resendCode(req, res) {
+  const { email } = req.body;
+  try {
+    if (!email) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User doesn't exist" });
+    }
+    const user = await User.findOne({ email });
+
+    const verificationToken = Math.floor(
+      100000 + Math.random() * 900000,
+    ).toString();
+
+    const verificationTokenExpiresAt = Date.now() + 0.3 * 60 * 60 * 1000;
+
+    user.verificationToken = verificationToken;
+    user.verificationTokenExpiresAt = verificationTokenExpiresAt;
+
+    await user.save();
+
+    sendVerificationEmail(email, verificationToken);
+    res.status(200).json({ success: true, message: "code resent" });
+  } catch (error) {
+    console.log("error in resend code controller", error);
+    res.status(500).json({ success: true, message: "server error" });
+  }
+}
+
 export async function verifyPassword(req, res) {
   const { code } = req.body;
+
   try {
     if (!code) {
       return res
         .status(400)
-        .json({ success: false, message: "Input verification code" });
+        .json({ success: false, message: "Input verification code here" });
     }
 
     const user = await User.findOne({

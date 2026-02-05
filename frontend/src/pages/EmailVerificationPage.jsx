@@ -1,8 +1,9 @@
 import { ChevronLeft, Loader } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "../utils/authStore";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function EmailVerificationPage() {
   const [code, setCode] = useState(new Array(6).fill(""));
@@ -50,7 +51,7 @@ export default function EmailVerificationPage() {
     }
   }
 
-  const { verifyEmail, isLoading, error } = useAuthStore();
+  const { verifyEmail, resendCode, isLoading, error, user } = useAuthStore();
 
   async function handleVerify(e) {
     e.preventDefault();
@@ -59,6 +60,23 @@ export default function EmailVerificationPage() {
       await verifyEmail(verificationCode);
       navigate("/dashboard");
       toast.success("Verification success");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    if (code.every((digit) => digit !== "")) {
+      handleVerify(new Event("submit"));
+    }
+  }, [code]);
+
+  async function handleResend(e) {
+    e.preventDefault();
+    const email = user.email;
+    try {
+      await resendCode(email);
+      toast.success("your code has been resent");
     } catch (error) {
       console.log(error);
     }
@@ -103,7 +121,9 @@ export default function EmailVerificationPage() {
 
         <div className="max-w-6xl mx-auto flex flex-col items-center mt-15">
           <p className="text-gray-400">Didn't receive the code?</p>
-          <button className="text-blue-500 mt-5">Resend Code</button>
+          <button onClick={handleResend} className="text-blue-500 mt-5">
+            Resend Code
+          </button>
         </div>
         <div className="mt-5">
           {error && (

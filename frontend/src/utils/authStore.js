@@ -35,6 +35,28 @@ export const useAuthStore = create((set) => ({
       throw error;
     }
   },
+
+  resendCode: async (email) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.post(`${api_url}/resend-code`, {
+        email,
+      });
+      set({
+        user: response.data.user,
+        isLoading: false,
+        isAuthenticated: true,
+      });
+    } catch (error) {
+      set({
+        error: error.response.data.message,
+        isLoading: false,
+        isAuthenticated: false,
+      });
+      throw error;
+    }
+  },
+
   verifyEmail: async (code) => {
     set({ isLoading: true, error: null });
     try {
