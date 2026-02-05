@@ -23,7 +23,7 @@ export default function SignupPage() {
       if (password !== confirmPassword) return setPassError(true);
       await signup(email, password, userName, name);
       toast.success("Account created successfully");
-      navigate("/dashboard");
+      navigate("/verify-email");
     } catch (error) {
       console.log(error);
     }

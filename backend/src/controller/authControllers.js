@@ -100,7 +100,7 @@ export async function login(req, res) {
     if ((!email && !userName) || !password) {
       return res
         .status(400)
-        .json({ success: false, message: "All fields are required" });
+        .json({ success: false, message: "All fields are required login" });
     }
 
     const user = await User.findOne({ $or: [{ email }, { userName }] });
@@ -114,7 +114,7 @@ export async function login(req, res) {
     if (!verifyPassword) {
       return res
         .status(400)
-        .json({ success: false, message: "Invalid credentials password" });
+        .json({ success: false, message: "Invalid credentials" });
     }
 
     user.lastLogin = Date.now();

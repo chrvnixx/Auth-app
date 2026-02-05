@@ -20,6 +20,13 @@ function App() {
     return children;
   }
 
+  function ProtectedRoutes({ children }) {
+    if (!isAuthenticated || !user.isVerified) {
+      return <Navigate to="/login" replace />;
+    }
+    return children;
+  }
+
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -48,8 +55,22 @@ function App() {
               </RedirectAuthenticatedUser>
             }
           />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/login"
+            element={
+              <RedirectAuthenticatedUser>
+                <LoginPage />
+              </RedirectAuthenticatedUser>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoutes>
+                <Dashboard />
+              </ProtectedRoutes>
+            }
+          />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route
             path="/verify-email"

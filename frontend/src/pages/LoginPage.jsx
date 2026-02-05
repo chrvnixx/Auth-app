@@ -1,11 +1,32 @@
-import { ChevronLeft, Unlock } from "lucide-react";
+import { ChevronLeft, Loader, Unlock } from "lucide-react";
 import React, { useState } from "react";
 import Input from "../components/Input";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useAuthStore } from "../utils/authStore";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+  const { login, isLoading, error, user } = useAuthStore();
+
+  const email = isEmail(credential) ? credential : null;
+  const userName = isEmail(credential) ? null : credential;
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    try {
+      await login(email, userName, password);
+      navigate("/dashboard");
+      toast.success(`Welcome Back ${user.userName}`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div>
@@ -34,7 +55,11 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <form className="text-white max-w-6xl mx-auto flex flex-col justify-center items-center px-5 mt-5">
+      {error && <p className="text-red-600 font-bold text-center">{error}</p>}
+      <form
+        onSubmit={handleLogin}
+        className="text-white max-w-6xl mx-auto flex flex-col justify-center items-center px-5 mt-5"
+      >
         <div>
           <label>Email or Username</label>
           <Input
@@ -63,11 +88,12 @@ export default function LoginPage() {
         </div>
 
         <button
+          disabled={isLoading}
           type="submit"
-          className=" bg-blue-600 px-30 py-3 text-xl text-white rounded-xl mt-15 mb-10 disabled:bg-blue-600/50"
+          className=" bg-blue-600 px-30 py-3 text-xl text-white rounded-xl mt-15 mb-10 disabled:bg-blue-600/40"
           style={{ boxShadow: "0 6px 20px rgba(37,99,235, 0.4)" }}
         >
-          Log in
+          {isLoading ? <Loader className="animate-spin" /> : "Log In"}
         </button>
       </form>
       <div className="max-w-6xl mx-auto flex justify-center text-sm mb-10">
