@@ -11,6 +11,7 @@ export default function SignupPage() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [passError, setPassError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ export default function SignupPage() {
   async function handleSignup(e) {
     e.preventDefault();
     try {
+      if (password !== confirmPassword) return setPassError(true);
       await signup(email, password, userName, name);
       toast.success("Account created successfully");
       navigate("/dashboard");
@@ -32,6 +34,11 @@ export default function SignupPage() {
       <p className="text-red-500 font-bold text-center fixed top-0 left-0 right-0 ">
         {error}
       </p>
+      {passError && (
+        <p className="text-red-500 font-bold text-center fixed top-0 left-0 right-0 ">
+          Passwords don't match
+        </p>
+      )}
       <div className="relative">
         <div>
           <ChevronLeft
