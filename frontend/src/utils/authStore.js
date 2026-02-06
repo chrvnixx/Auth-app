@@ -114,4 +114,25 @@ export const useAuthStore = create((set) => ({
       throw error;
     }
   },
+
+  forgotPassword: async (email) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.post(`${api_url}/forgot-password`, {
+        email,
+      });
+      set({
+        user: response.data.user,
+        isLoading: false,
+        isAuthenticated: true,
+      });
+    } catch (error) {
+      set({
+        error: error.response.data.message,
+        isLoading: false,
+        isAuthenticated: false,
+      });
+      throw error;
+    }
+  },
 }));
