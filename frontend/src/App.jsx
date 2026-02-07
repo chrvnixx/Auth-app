@@ -9,6 +9,7 @@ import EmailVerificationPage from "./pages/EmailVerificationPage";
 import { useAuthStore } from "./utils/authStore";
 import { PuffLoader } from "react-spinners";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function App() {
   const { checkAuth, user, isAuthenticated, isCheckingAuth } = useAuthStore();
@@ -72,6 +73,10 @@ function App() {
             }
           />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route
+            path="/reset-password/:token"
+            element={<ResetPasswordPage />}
+          />
           <Route path="/verify-email" element={<EmailVerificationPage />} />
         </Routes>
       </div>

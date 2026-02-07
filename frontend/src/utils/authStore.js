@@ -135,4 +135,45 @@ export const useAuthStore = create((set) => ({
       throw error;
     }
   },
+
+  resetPassword: async (token, password) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.post(`${api_url}/reset-password/:token`, {
+        token,
+        password,
+      });
+      set({
+        user: response.data.user,
+        isLoading: false,
+        isAuthenticated: true,
+      });
+    } catch (error) {
+      set({
+        error: error.response.data.message,
+        isLoading: false,
+        isAuthenticated: false,
+      });
+      throw error;
+    }
+  },
+
+  logout: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.post(`${api_url}/logout`);
+      set({
+        user: response.data.user,
+        isLoading: false,
+        isAuthenticated: false,
+      });
+    } catch (error) {
+      set({
+        error: error.response.data.message,
+        isLoading: false,
+        isAuthenticated: false,
+      });
+      throw error;
+    }
+  },
 }));

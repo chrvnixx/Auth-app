@@ -216,7 +216,7 @@ export async function resetPassword(req, res) {
     if (!user) {
       return res
         .status(400)
-        .json({ success: false, message: "Invalid or expired token" });
+        .json({ success: false, message: "Invalid or expired link" });
     }
 
     const isOldPassword = await bcrypt.compare(password, user.password);
