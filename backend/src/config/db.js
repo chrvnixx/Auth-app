@@ -5,6 +5,6 @@ export default async function connectDb() {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log("MongoDb has connected successfully");
   } catch (error) {
-    console.log("MongoDb has run into some issues ");
+    console.log("MongoDb has run into some issues ", error);
   }
 }
