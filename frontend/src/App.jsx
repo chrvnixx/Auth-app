@@ -64,6 +64,7 @@ function App() {
               </RedirectAuthenticatedUser>
             }
           />
+          <Route path="*" element={<LandingPage />} />
           <Route
             path="/dashboard"
             element={
